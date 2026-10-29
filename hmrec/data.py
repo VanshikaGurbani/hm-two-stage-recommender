@@ -77,7 +77,9 @@ class HMData:
         return m
 
 
-def find_archive(search: tuple[Path, ...] = (Path("."), DATA_DIR)) -> Path | None:
+def find_archive(
+    search: tuple[Path, ...] = (Path("."), DATA_DIR, Path.home() / "Downloads"),
+) -> Path | None:
     """A complete Kaggle zip saved by hand (browser download), if one is present."""
     for folder in search:
         for p in sorted(Path(folder).glob("*.zip")):
