@@ -120,6 +120,7 @@ class FeatureBuilder:
 
     def _user_text_profile(self, f: pd.DataFrame) -> np.ndarray:
         """Mean embedding of each customer's 5 most recent purchases."""
+        assert self.emb is not None
         n_u = self.data.n_users
         prof = np.zeros((n_u, self.emb.shape[1]), dtype=np.float32)
         last5 = f.sort_values("ts").groupby("user").tail(5)
@@ -161,7 +162,7 @@ class FeatureBuilder:
         out["pair_price_ratio"] = self.i_price[i] / np.where(
             self.u_price[u] > 0, self.u_price[u], np.nan
         )
-        if self.user_text is not None:
+        if self.user_text is not None and self.emb is not None:
             out["text_cos_recent"] = (self.emb[i] * self.user_text[u]).sum(1)
         feats = pd.DataFrame(out, index=df.index)
         return pd.concat([df, feats], axis=1)
@@ -253,7 +254,7 @@ def rank_pool(
     pos = {int(u): j for j, u in enumerate(users)}
     for u, g in scored.groupby("user", sort=False):
         g = g.head(k)
-        j = pos[int(u)]
+        j = pos[int(u)]  # type: ignore[arg-type]
         ranked[j, : len(g)] = g["item"].to_numpy()
         scores[j, : len(g)] = g["s"].to_numpy()
     return ranked, scores

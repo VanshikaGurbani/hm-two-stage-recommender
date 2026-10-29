@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import faiss
 import numpy as np
 
 
 class ItemIndex:
     def __init__(self, vectors: np.ndarray, kind: str = "hnsw", m: int = 32, ef_search: int = 128):
+        self.index: Any
         self.vectors = np.ascontiguousarray(vectors, dtype=np.float32)
         d = self.vectors.shape[1]
         if kind == "hnsw":

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import numpy as np
 import pandas as pd
 
 DAY = 86400
@@ -62,9 +63,9 @@ def check_no_leakage(split: Split) -> None:
 
 def relevant_items(
     target: pd.DataFrame, history: pd.DataFrame, require_history: bool = True
-) -> dict[int, pd.Series]:
+) -> dict[int, np.ndarray]:
     """customer -> unique items bought in the target week (only customers with prior history)."""
     t = target
     if require_history:
         t = t[t["user"].isin(set(history["user"].unique()))]
-    return {int(u): g["item"].unique() for u, g in t.groupby("user")}
+    return {int(u): g["item"].unique() for u, g in t.groupby("user")}  # type: ignore[arg-type]

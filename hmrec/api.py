@@ -38,7 +38,8 @@ class RecommendResponse(BaseModel):
 
 class LRU:
     def __init__(self, size: int):
-        self.size, self.d, self.hits, self.misses = size, OrderedDict(), 0, 0
+        self.d: OrderedDict = OrderedDict()
+        self.size, self.hits, self.misses = size, 0, 0
 
     def get(self, key):
         if key in self.d:

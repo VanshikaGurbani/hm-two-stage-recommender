@@ -170,6 +170,7 @@ class TwoTower(Recommender):
         """Top-n article indices per customer through the ANN index."""
         if self.index is None:
             self.build_index()
+        assert self.index is not None
         _, ids = self.index.search(self.user_vectors(self.user_hist[users]), n)
         return ids
 
@@ -184,6 +185,7 @@ class TwoTower(Recommender):
                 q = parent.user_vectors(parent.user_hist[users])
                 if parent.index is None:
                     parent.build_index()
+                assert parent.index is not None
                 sc, ids = parent.index.search(q, n)
                 out = np.full((len(users), parent.n_items), -np.inf, dtype=np.float32)
                 rows = np.repeat(np.arange(len(users)), ids.shape[1])

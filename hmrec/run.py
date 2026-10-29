@@ -69,7 +69,7 @@ def run(args: argparse.Namespace) -> dict:
     print(res["data"], res["eval_customers"], flush=True)
 
     # ---------------------------------------------------------------- baselines
-    grids = {
+    grids: dict[str, list] = {
         "popularity": [lambda d=d: Mo.Popularity(d) for d in (7, 14, 28)],
         "repurchase": [lambda h=h: Mo.Repurchase(h) for h in (7, 14, 28, 56)],
         "age-popularity": [lambda d=d: Mo.AgePopularity(d) for d in (7, 14)],
@@ -78,7 +78,9 @@ def run(args: argparse.Namespace) -> dict:
             lambda f=f: Mo.ALS(factors=f, days=args.history_weeks * 7 or 180) for f in (32, 64)
         ],
     }
-    tuning, chosen, test_results = {}, {}, {}
+    tuning: dict = {}
+    chosen: dict = {}
+    test_results: dict = {}
     for family, factories in grids.items():
         rows = []
         for fac in factories:

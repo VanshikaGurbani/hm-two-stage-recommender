@@ -19,6 +19,7 @@ jobs:
           pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
           pip install -e ".[serve,track,notebooks,dev]"
       - run: ruff check .
+      - run: mypy hmrec --ignore-missing-imports
       - run: ruff format --check hmrec tests app notebooks/build_notebooks.py
       - name: Tests (synthetic fixtures only, no Kaggle data needed)
         run: pytest

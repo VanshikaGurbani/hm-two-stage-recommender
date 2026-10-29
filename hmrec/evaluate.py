@@ -102,7 +102,9 @@ class Evaluator:
         return np.vstack(out)
 
     def evaluate(self, model, name: str | None = None) -> EvalResult:
-        return self.metrics_from_ranking(self.rank(model), name or getattr(model, "name", "model"))
+        return self.metrics_from_ranking(
+            self.rank(model), name or str(getattr(model, "name", "model"))
+        )
 
     def metrics_from_ranking(self, ranked: np.ndarray, name: str) -> EvalResult:
         k, rel = self.k, self.rel
