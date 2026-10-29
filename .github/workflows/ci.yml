@@ -26,6 +26,8 @@ jobs:
       - name: End-to-end smoke run of the experiment script on the fixture
         run: python -m hmrec.run --fixture --data-dir /tmp/hmfx --sample-frac 1.0 --encoder tfidf --history-weeks 8 --tt-epochs 2 --threads 2 --out /tmp/out --docs /tmp/docs
       - name: Notebooks execute on the fixture fallback
+        env:
+          HM_FORCE_SYNTHETIC: "1"
         run: |
           python -m ipykernel install --user --name hmrec
           python notebooks/build_notebooks.py --execute

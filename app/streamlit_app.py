@@ -14,6 +14,7 @@ import pandas as pd
 import streamlit as st
 
 from hmrec import workspace
+from hmrec.images import ImageStore
 from hmrec.pipeline import System
 
 st.set_page_config(page_title="H&M two-stage recommender", layout="wide")
@@ -23,6 +24,11 @@ st.set_page_config(page_title="H&M two-stage recommender", layout="wide")
 def load_system(sample_frac: float) -> System:
     world = workspace.setup(sample_frac=sample_frac, seed=0)
     return System.build(world)
+
+
+@st.cache_resource
+def image_store() -> ImageStore:
+    return ImageStore()
 
 
 def results() -> dict | None:
@@ -46,6 +52,9 @@ lam = st.sidebar.slider(
     "Relevance vs variety (MMR lambda)", 0.3, 1.0, 1.0, 0.1, help="1.0 = most relevant only"
 )
 
+images = image_store()
+if not images.available:
+    st.info("No product photos found (extract the competition zip or its images/ folder).")
 tab_recs, tab_hist, tab_eval = st.tabs(["Recommendations", "Purchase history", "How good is it?"])
 
 with tab_recs:
@@ -61,8 +70,12 @@ with tab_recs:
     for _, r in recs.iterrows():
         mark = "✅ " if int(r["item"]) in bought_next else ""
         with st.container(border=True):
-            st.markdown(f"**{mark}{r['name']}** · {r['product_type']} · {r['colour']}")
-            st.caption(f"Why: {r['why']}  ·  score {r['score']:.3f}")
+            pic, text = st.columns([1, 4])
+            photo = images.get(int(r["article_id"])) if images.available else None
+            if photo:
+                pic.image(photo, width=110)
+            text.markdown(f"**{mark}{r['name']}** · {r['product_type']} · {r['colour']}")
+            text.caption(f"Why: {r['why']}  ·  score {r['score']:.3f}")
 
 with tab_hist:
     st.dataframe(system.history(user, 25), use_container_width=True, hide_index=True)

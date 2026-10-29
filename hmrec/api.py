@@ -11,10 +11,11 @@ import time
 from collections import OrderedDict
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import FastAPI, HTTPException, Query, Request, Response
 from pydantic import BaseModel
 
 from . import workspace
+from .images import ImageStore
 from .pipeline import System
 
 
@@ -66,6 +67,7 @@ async def lifespan(app: FastAPI):
     app.state.cache = LRU(int(os.environ.get("HM_CACHE_SIZE", "4096")))
     app.state.index_of = {str(c): i for i, c in enumerate(world.hm.user_ids)}
     app.state.synthetic = world.synthetic
+    app.state.images = ImageStore()
     yield
 
 
@@ -90,6 +92,14 @@ def customers(request: Request, limit: int = Query(5, ge=1, le=100)) -> dict:
     s: System = request.app.state.system
     users = s.world.ev_test.users[:limit]
     return {"customer_ids": [str(s.world.hm.user_ids[u]) for u in users]}
+
+
+@app.get("/image/{article_id}")
+def image(request: Request, article_id: int) -> Response:
+    photo = request.app.state.images.get(article_id)
+    if photo is None:
+        raise HTTPException(404, "no photo for this article")
+    return Response(photo, media_type="image/jpeg", headers={"Cache-Control": "max-age=86400"})
 
 
 @app.get("/recommend", response_model=RecommendResponse)

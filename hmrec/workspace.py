@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -43,10 +44,11 @@ def setup(
     """
     root = Path(data_dir)
     synthetic = False
-    if not (root / "customers.csv").exists():
-        if D.find_archive() is not None:
-            D.download(root)
-        elif allow_fixture:
+    force_fixture = os.environ.get("HM_FORCE_SYNTHETIC") == "1"  # used by tests and CI
+    if force_fixture or not (root / "customers.csv").exists():
+        if not force_fixture and root == D.DATA_DIR and D.find_archive() is not None:
+            D.download(root)  # unzip the three CSVs from a competition zip left in the project
+        elif allow_fixture or force_fixture:
             root = Path(tempfile.mkdtemp(prefix="hm_fixture_"))
             D.make_fixture(root, n_customers=600, n_articles=120, n_weeks=16, seed=seed)
             sample_frac, history_weeks, encoder, synthetic = 1.0, 8, "tfidf", True
