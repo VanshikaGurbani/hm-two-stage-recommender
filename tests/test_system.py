@@ -48,3 +48,15 @@ def test_history_view(system):
     user = int(system.world.ev_test.users[0])
     h = system.history(user, 5)
     assert 1 <= len(h) <= 5 and h["date"].is_monotonic_decreasing
+
+
+def test_system_builds_without_torch(monkeypatch):
+    """Hosting the demo without PyTorch must skip the two-tower source, not crash."""
+    import sys
+
+    monkeypatch.setitem(sys.modules, "hmrec.twotower", None)  # makes the import raise
+    world = workspace.setup(allow_fixture=True, data_dir="__no_such_dir__")
+    s = System.build(world, history_weeks=8, threads=2)
+    assert "two_tower" not in s.sources and len(s.sources) == 5
+    user = int(world.ev_test.users[0])
+    assert len(s.recommend(user, k=5)) == 5

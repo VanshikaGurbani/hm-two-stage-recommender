@@ -191,6 +191,13 @@ abl["delta vs full"] = abl["map@12"] - abl.loc["full", "map@12"]
 abl.round(4)"""),
     code("""
 abl["delta vs full"].drop("full").sort_values().plot(kind="barh", figsize=(8, 3), title="MAP@12 change when a feature group is removed"); plt.show()"""),
+    md("""Differences between runs are small next to the sampling noise of a few thousand customers, so
+test each against the full model with a **paired bootstrap** (an interval containing 0 is not evidence
+of anything):"""),
+    code("""
+from hmrec.evaluate import paired_bootstrap
+full = runs["full"][3].per_user["map@12"]
+pd.DataFrame({k: paired_bootstrap(full, v[3].per_user["map@12"]) for k, v in runs.items() if k != "full"}).T.round(5)"""),
     md("## What the model uses"),
     code("""
 rk = runs["full"][0]

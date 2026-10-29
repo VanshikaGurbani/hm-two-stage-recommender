@@ -1,0 +1,13 @@
+# Minimal pinned set for hosting the Streamlit demo (no PyTorch: the two-tower source is skipped
+# automatically when torch is missing). For everything else use:  pip install -e ".[all]"
+numpy==2.3.2
+pandas==2.3.2
+scipy==1.16.1
+scikit-learn==1.7.1
+pyarrow==21.0.0
+lightgbm==4.7.0
+implicit==0.7.3
+faiss-cpu==1.15.1
+matplotlib==3.10.5
+streamlit==1.48.1
+-e .

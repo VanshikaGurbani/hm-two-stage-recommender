@@ -5,9 +5,9 @@ two-tower + FAISS) followed by a LightGBM LambdaRank ranker, evaluated on a stri
 temporal split of the Kaggle *H&M Personalized Fashion Recommendations* purchases. Includes
 analysis notebooks, a Streamlit demo, a FastAPI service with measured latency, and tests/CI.
 
-> **Status:** the code and tests are complete; **real-data results have not been generated yet**.
-> The results block below is filled in automatically by `python -m hmrec.run` and is empty until
-> that has run on the real data. No number in this README is typed by hand.
+> **Status:** all numbers in the Results block were produced by `python -m hmrec.run`,
+> `python -m hmrec.ann_eval` and `python -m hmrec.loadtest` on a seeded 10% customer sample and are
+> inserted by `python -m hmrec.report`; none is typed by hand.
 
 ## Quick start
 
@@ -119,7 +119,29 @@ Full ranker minus best baseline (`repurchase`): +0.0060 [+0.0039, +0.0079] MAP@1
 _Full run took 23 min on CPU; seed 0._
 <!-- RESULTS:END -->
 
+## Reading the results
+
+- **Repurchasing is the strongest single signal.** The best simple baseline is "buy it again", far
+  ahead of global or age-group popularity and of collaborative models trained on their own.
+- **The two-stage ranker beats that baseline**, and the paired interval in the ablation table says
+  by how much. The gain is real but modest: most of it comes from article and customer×article
+  features, not from the learned candidate sources.
+- **Not every feature group earns its place.** In the ablation, groups whose interval spans zero
+  (marked `n.s.`) are not shown to help on this sample. In particular the text-embedding feature
+  adds nothing measurable here.
+- **Candidate recall is the ceiling.** The union of sources proposes only a small share of what was
+  bought, so better candidate generation is the largest remaining lever, more than ranker tuning.
+- **MMR trades accuracy for category variety almost linearly** and barely changes catalogue
+  coverage; popularity concentration stays high because the data itself is concentrated.
+- **ANN:** at ~100k articles an exact search is as fast as HNSW; HNSW is included because it is how
+  this would be served at larger catalogue sizes, and the table shows what its recall costs.
+
 ## Limitations (read before quoting any number)
+
+- The LightGBM ranker stopped early at a small number of trees on a one-week validation slice;
+  it is lightly tuned and results are from a single seed.
+- Notebooks use slightly simpler settings than `hmrec.run` (no two-tower source), so their ablation
+  numbers differ from the README table. The README table is the reference.
 
 - Scores come from a seeded **customer subsample** and my own week split; they are **not comparable
   to the Kaggle leaderboard** (different customer set, no private test week).

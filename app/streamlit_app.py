@@ -32,8 +32,11 @@ def image_store() -> ImageStore:
 
 
 def results() -> dict | None:
-    p = Path("results/results.json")
-    return json.loads(p.read_text()) if p.exists() else None
+    for folder in ("results", "docs/results"):  # the second is the committed copy
+        p = Path(folder) / "results.json"
+        if p.exists():
+            return json.loads(p.read_text())
+    return None
 
 
 st.title("H&M personalized recommendations")

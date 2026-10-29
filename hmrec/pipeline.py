@@ -18,7 +18,6 @@ from . import candidates as C
 from . import models as Mo
 from . import ranker as R
 from .rerank import mmr_select
-from .twotower import TwoTower
 from .workspace import World
 
 SOURCE_LABELS = {
@@ -34,15 +33,24 @@ SOURCE_LABELS = {
 def default_sources(
     ctx: Mo.FitContext, history_weeks: int = 26, tt_epochs: int = 6, ann: bool = False
 ) -> dict[str, C.Source]:
-    tt = TwoTower(epochs=tt_epochs, days=history_weeks * 7).fit(ctx)
-    return {
-        "two_tower": C.Source(tt.ann_source(100) if ann else tt, 100),
-        "repurchase": C.Source(Mo.Repurchase(28).fit(ctx), 40),
-        "popularity": C.Source(Mo.Popularity(7).fit(ctx), 30),
-        "age_pop": C.Source(Mo.AgePopularity(14).fit(ctx), 30),
-        "co_purchase": C.Source(Mo.CoPurchase(days=56).fit(ctx), 50),
-        "als": C.Source(Mo.ALS(factors=64, days=history_weeks * 7).fit(ctx), 50),
-    }
+    sources: dict[str, C.Source] = {}
+    try:  # the two-tower source needs torch; the rest of the system works without it
+        from .twotower import TwoTower
+
+        tt = TwoTower(epochs=tt_epochs, days=history_weeks * 7).fit(ctx)
+        sources["two_tower"] = C.Source(tt.ann_source(100) if ann else tt, 100)
+    except ImportError:
+        pass
+    sources.update(
+        {
+            "repurchase": C.Source(Mo.Repurchase(28).fit(ctx), 40),
+            "popularity": C.Source(Mo.Popularity(7).fit(ctx), 30),
+            "age_pop": C.Source(Mo.AgePopularity(14).fit(ctx), 30),
+            "co_purchase": C.Source(Mo.CoPurchase(days=56).fit(ctx), 50),
+            "als": C.Source(Mo.ALS(factors=64, days=history_weeks * 7).fit(ctx), 50),
+        }
+    )
+    return sources
 
 
 @dataclass
