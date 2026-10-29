@@ -1,4 +1,4 @@
-"""Shared setup for the notebooks and the Streamlit app (loads data, split, contexts, embeddings)."""
+"""Shared setup for the notebooks and Streamlit app: data, split, contexts, embeddings."""
 
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ def setup(
     data_dir: str | Path = "data",
     allow_fixture: bool = True,
 ) -> World:
-    """Load the real data if present; otherwise (``allow_fixture``) fall back to a tiny synthetic set.
+    """Load the real data if present; else (``allow_fixture``) fall back to a tiny synthetic set.
 
     The fallback exists so the notebooks run end-to-end on a fresh clone. It is flagged by
     ``World.synthetic`` and every notebook prints a banner when it is used.
