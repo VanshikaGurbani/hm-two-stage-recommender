@@ -6,7 +6,7 @@ Scores of -inf mean "not a candidate".
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
 
 import numpy as np
@@ -22,6 +22,7 @@ class FitContext:
     data: HMData
     frame: pd.DataFrame  # purchases strictly before the target week
     seed: int = 0
+    extras: dict = field(default_factory=dict)  # e.g. text embeddings for neural models
 
     @cached_property
     def ref_ts(self) -> int:

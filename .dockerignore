@@ -1,0 +1,9 @@
+data
+results
+mlruns
+.git
+.env
+*.zip
+kaggle token.txt
+notebooks
+tests

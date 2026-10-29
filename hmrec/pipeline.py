@@ -18,6 +18,7 @@ from . import candidates as C
 from . import models as Mo
 from . import ranker as R
 from .rerank import mmr_select
+from .twotower import TwoTower
 from .workspace import World
 
 SOURCE_LABELS = {
@@ -26,11 +27,16 @@ SOURCE_LABELS = {
     "age_pop": "popular with customers your age",
     "co_purchase": "often bought together with your recent items",
     "als": "liked by customers with similar taste",
+    "two_tower": "matches the style of your recent purchases",
 }
 
 
-def default_sources(ctx: Mo.FitContext, history_weeks: int = 26) -> dict[str, C.Source]:
+def default_sources(
+    ctx: Mo.FitContext, history_weeks: int = 26, tt_epochs: int = 6, ann: bool = False
+) -> dict[str, C.Source]:
+    tt = TwoTower(epochs=tt_epochs, days=history_weeks * 7).fit(ctx)
     return {
+        "two_tower": C.Source(tt.ann_source(100) if ann else tt, 100),
         "repurchase": C.Source(Mo.Repurchase(28).fit(ctx), 40),
         "popularity": C.Source(Mo.Popularity(7).fit(ctx), 30),
         "age_pop": C.Source(Mo.AgePopularity(14).fit(ctx), 30),
@@ -48,14 +54,18 @@ class System:
     build_seconds: float = 0.0
 
     @classmethod
-    def build(cls, world: World, history_weeks: int = 26, threads: int = 8) -> System:
+    def build(
+        cls, world: World, history_weeks: int = 26, threads: int = 8, tt_epochs: int = 6
+    ) -> System:
         t0 = time.time()
         ev = world.ev_val
-        pool = C.generate(default_sources(world.ctx_train, history_weeks), ev.users, ev.rel)
+        pool = C.generate(
+            default_sources(world.ctx_train, history_weeks, tt_epochs), ev.users, ev.rel
+        )
         frame = R.FeatureBuilder(world.hm, world.ctx_train, world.emb).featurize(pool.frame)
         feats = [c for c in frame.columns if c not in ("user", "item", "label")]
         ranker = R.train_ranker(frame, feats, params={"num_threads": threads})
-        sources = default_sources(world.ctx_fit, history_weeks)
+        sources = default_sources(world.ctx_fit, history_weeks, tt_epochs, ann=True)
         fb = R.FeatureBuilder(world.hm, world.ctx_fit, world.emb)
         return cls(world, sources, ranker, fb, time.time() - t0)
 
