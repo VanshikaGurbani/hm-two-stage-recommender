@@ -93,6 +93,29 @@ Full ranker minus best baseline (`repurchase`): +0.0060 [+0.0039, +0.0079] MAP@1
 | 0.7 | 0.0323 | 0.0468 | 9.42 | 0.660 | 0.488 |
 | 0.5 | 0.0307 | 0.0469 | 9.41 | 0.685 | 0.490 |
 
+### Two-tower + FAISS HNSW
+
+| measure | value |
+|---|---|
+| catalogue_articles | 105542 |
+| dim | 64 |
+| train_seconds | 221.1 |
+| final_train_loss | 5.7206 |
+| hnsw_build_seconds | 3.55 |
+| exact_candidate_recall@100 | 0.0895 |
+| exact_ms_per_query | 0.07 |
+| hnsw_by_efSearch | {"16": {"overlap_with_exact_top100": 0.6219, "candidate_recall@100": 0.0858, "ms_per_query": 0.007}, "64": {"overlap_with_exact_top100": 0.8981, "candidate_recall@100": 0.0908, "ms_per_query": 0.011}, "128": {"overlap_with_exact_top100": 0.9645, "candidate_recall@100": 0.0898, "ms_per_query": 0.015}, "256": {"overlap_with_exact_top100": 0.9906, "candidate_recall@100": 0.0893, "ms_per_query": 0.034}} |
+| eval_customers | 5726 |
+
+### API latency (one machine, 8 concurrent clients)
+
+| pass | requests | p50 ms | p95 ms | p99 ms | server-side p50 ms | req/s | cache hits |
+|---|---|---|---|---|---|---|---|
+| single_request_cold | 30 | 21.7 | 32.9 | 2369.1 | 19.8 | 7.5 | 0.0 |
+| cold_cache_under_load | 70 | 117.6 | 554.4 | 569.0 | 100.5 | 47.8 | 0.0 |
+| mixed_cache_under_load | 300 | 5.9 | 122.5 | 518.3 | 0.0 | 283.5 | 0.9 |
+| all_cached_under_load | 70 | 4.2 | 373.9 | 384.1 | 0.0 | 171.3 | 1.0 |
+
 _Full run took 23 min on CPU; seed 0._
 <!-- RESULTS:END -->
 

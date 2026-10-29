@@ -69,9 +69,8 @@ def main() -> None:
         "eval_customers": len(users),
     }
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    flat = {k: (json.dumps(v) if isinstance(v, dict) else v) for k, v in res.items()}
-    Path(args.out).write_text(json.dumps(flat, indent=2))
-    print(json.dumps(flat, indent=2))
+    Path(args.out).write_text(json.dumps(res, indent=2))
+    print(json.dumps(res, indent=2))
 
 
 if __name__ == "__main__":

@@ -122,6 +122,7 @@ def build(results_dir: Path = Path("results")) -> str:
                 f"{v['p50_ms']}",
                 f"{v['p95_ms']}",
                 f"{v['p99_ms']}",
+                f"{v['server_p50_ms']}",
                 f"{v['throughput_rps']}",
                 f"{v['cache_hit_share']}",
             ]
@@ -131,7 +132,17 @@ def build(results_dir: Path = Path("results")) -> str:
         out.append(
             f"### API latency (one machine, {t['concurrency']} concurrent clients)\n\n"
             + _table(
-                rows, ["pass", "requests", "p50 ms", "p95 ms", "p99 ms", "req/s", "cache hits"]
+                rows,
+                [
+                    "pass",
+                    "requests",
+                    "p50 ms",
+                    "p95 ms",
+                    "p99 ms",
+                    "server-side p50 ms",
+                    "req/s",
+                    "cache hits",
+                ],
             )
         )
     out.append(

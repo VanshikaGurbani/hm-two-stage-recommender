@@ -12,6 +12,7 @@ import json
 import os
 import subprocess
 import sys
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -31,22 +32,36 @@ def percentiles(ms: list[float]) -> dict:
     }
 
 
+_local = threading.local()
+
+
+def _client(base: str) -> httpx.Client:
+    """One keep-alive client per worker thread (a fresh client per call measures TLS setup)."""
+    if not hasattr(_local, "client"):
+        _local.client = httpx.Client(base_url=base, timeout=60)
+    return _local.client
+
+
 def run_pass(base: str, ids: list[str], concurrency: int, lam: float) -> dict:
-    def call(cid: str) -> tuple[float, bool]:
+    def call(cid: str) -> tuple[float, float, bool]:
         t0 = time.perf_counter()
-        r = httpx.get(f"{base}/recommend", params={"customer_id": cid, "lam": lam}, timeout=60)
+        r = _client(base).get("/recommend", params={"customer_id": cid, "lam": lam})
         r.raise_for_status()
-        return (time.perf_counter() - t0) * 1000, bool(r.json()["cached"])
+        body = r.json()
+        return (time.perf_counter() - t0) * 1000, float(body["latency_ms"]), bool(body["cached"])
 
     t0 = time.perf_counter()
     with ThreadPoolExecutor(concurrency) as ex:
         out = list(ex.map(call, ids))
     wall = time.perf_counter() - t0
     res = percentiles([o[0] for o in out])
+    server = percentiles([o[1] for o in out])
     res.update(
         {
+            "server_p50_ms": server["p50_ms"],
+            "server_p95_ms": server["p95_ms"],
             "throughput_rps": round(len(ids) / wall, 1),
-            "cache_hit_share": round(float(np.mean([o[1] for o in out])), 3),
+            "cache_hit_share": round(float(np.mean([o[2] for o in out])), 3),
         }
     )
     return res
@@ -94,12 +109,15 @@ def main() -> None:
         single = run_pass(base, distinct[:30], 1, 0.9)
         cold = run_pass(base, distinct[30:] or distinct, args.concurrency, 1.0)
         warm = run_pass(base, ids, args.concurrency, 1.0)
+        # a pass where every request is a cache hit isolates HTTP + serialisation overhead
+        cached = run_pass(base, distinct[30:] or distinct, args.concurrency, 1.0)
         result = {
             "health": health,
             "concurrency": args.concurrency,
             "single_request_cold": single,
             "cold_cache_under_load": cold,
-            "warm_cache_under_load": warm,
+            "mixed_cache_under_load": warm,
+            "all_cached_under_load": cached,
         }
     finally:
         proc.terminate()
