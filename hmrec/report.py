@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 START, END = "<!-- RESULTS:START -->", "<!-- RESULTS:END -->"
+H_START, H_END = "<!-- HEADLINE:START -->", "<!-- HEADLINE:END -->"
 
 
 def _ci(v: dict, key: str = "map@12") -> str:
@@ -151,6 +152,36 @@ def build(results_dir: Path = Path("results")) -> str:
     return "\n".join(out)
 
 
+def headline(results_dir: Path = Path("results")) -> str:
+    """Two plain-language sentences with the key measured numbers (for non-technical readers)."""
+    res = json.loads((results_dir / "results.json").read_text())
+    best = max(res["baselines_test"].items(), key=lambda kv: kv[1]["map@12"])
+    full = res["ranker"]["ablation"]["full"]
+    gain = res["ranker"]["full_vs_best_baseline"]
+    union = res["candidates"]["test_recall"]["union"]
+    lat = results_dir / "loadtest.json"
+    speed = ""
+    if lat.exists():
+        t = json.loads(lat.read_text())["single_request_cold"]
+        speed = f" A single recommendation takes about {t['p50_ms']:.0f} milliseconds."
+    n = res["eval_customers"]["test"]
+    return (
+        f"On {n:,} real shoppers, the system scored **{full['map@12']:.3f}** (higher is better) "
+        f"against **{best[1]['map@12']:.3f}** for the best simple rule, 'suggest what they "
+        f"bought before'. The improvement is statistically reliable: with 95% confidence it "
+        f"lies between {gain['lo']:+.3f} and {gain['hi']:+.3f}. "
+        f"The shortlist step finds about {union:.0%} of what shoppers go on to buy.{speed}"
+    )
+
+
+def _replace(text: str, start: str, end: str, body: str) -> str:
+    if start not in text or end not in text:
+        return text
+    head, rest = text.split(start, 1)
+    tail = rest.split(end, 1)[1]
+    return "\n".join([f"{head}{start}", body.strip(), f"{end}{tail}"])
+
+
 def write(
     results_dir: Path = Path("results"), docs: Path = Path("docs"), readme: Path = Path("README.md")
 ) -> None:
@@ -161,12 +192,9 @@ def write(
     )
     if readme.exists():
         text = readme.read_text(encoding="utf-8")
-        if START in text and END in text:
-            head, rest = text.split(START, 1)
-            tail = rest.split(END, 1)[1]
-            readme.write_text(
-                "\n".join([f"{head}{START}", body.strip(), f"{END}{tail}"]), encoding="utf-8"
-            )
+        text = _replace(text, START, END, body)
+        text = _replace(text, H_START, H_END, headline(results_dir))
+        readme.write_text(text, encoding="utf-8")
 
 
 if __name__ == "__main__":

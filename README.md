@@ -1,44 +1,122 @@
-# H&M personalized recommendations: two-stage recommender
+# H&M Fashion Recommender
 
-Candidate generation (repurchase, trending, age-group popularity, co-purchase, implicit ALS,
-two-tower + FAISS) followed by a LightGBM LambdaRank ranker, evaluated on a strict week-based
-temporal split of the Kaggle *H&M Personalized Fashion Recommendations* purchases. Includes
-analysis notebooks, a Streamlit demo, a FastAPI service with measured latency, and tests/CI.
+A system that suggests which clothes a shopper is likely to buy next, built and tested on real
+H&M purchase records (31.8 million purchases, 105,000 products, 1.37 million customers).
 
-> **Status:** all numbers in the Results block were produced by `python -m hmrec.run`,
-> `python -m hmrec.ann_eval` and `python -m hmrec.loadtest` on a seeded 10% customer sample and are
-> inserted by `python -m hmrec.report`; none is typed by hand.
+## The result in one paragraph
 
-## Quick start
+<!-- HEADLINE:START -->
+On 5,726 real shoppers, the system scored **0.033** (higher is better) against **0.027** for the best simple rule, 'suggest what they bought before'. The improvement is statistically reliable: with 95% confidence it lies between +0.004 and +0.008. The shortlist step finds about 16% of what shoppers go on to buy. A single recommendation takes about 22 milliseconds.
+<!-- HEADLINE:END -->
+
+## What it does, in plain words
+
+Picture an online shop with over 100,000 products. For each shopper the system picks the 12
+products they are most likely to buy in the coming week. It works in two steps, like a shop
+assistant would:
+
+1. **Make a shortlist.** Several quick "scouts" each suggest items: things the shopper bought
+   before, what is trending this week, what people of the same age buy, items often bought
+   together, items liked by shoppers with similar taste, and a small neural network that
+   matches the style of recent purchases. Together they produce about 160 candidates.
+2. **Sort the shortlist.** A learned ranking model looks at 44 clues (how often the shopper buys
+   this kind of product, how popular the item is, its price compared with what they usually
+   spend, how recently they shopped, and so on) and puts the likeliest items first.
+
+Every suggestion comes with a one-line reason in everyday language, for example "you bought it
+2 times, last 14 days ago" or "trending this week". The reasons are built from facts in the
+purchase records, never invented. A "variety" slider lets you trade a little accuracy for a more
+varied list.
+
+## How it was tested
+
+The test is a replay of real life. The system is only shown purchases up to a certain day, and we
+then check whether its 12 suggestions match what shoppers really bought in the following 7 days.
+Nothing from the future can leak in, and automated tests check that.
+
+The score used is the one from the original H&M competition, **MAP@12**. It runs from 0 to 1 and
+is higher when the products a shopper really bought sit nearer the top of the 12 suggestions.
+Scores on this kind of data are small, because shoppers buy only a few of 100,000 products in
+a week. What matters is the comparison with simple alternatives, shown below.
+
+## Try it
+
+**Live demo:** see the link in the repository's *About* box. The online demo uses made-up sample
+shoppers, because H&M's real data is not allowed to be shared publicly.
+
+**Run it on your own computer** (Windows, Mac or Linux, with Python 3.11 or newer):
 
 ```bash
-pip install -e ".[all]"            # CPU torch: pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
-python -m hmrec.data download      # unzips the 3 CSVs from a competition zip in this folder / Downloads,
-                                   # or fetches them with the Kaggle CLI using credentials from .env
-python -m hmrec.run                # every number below (10% customer sample, seed 0)
-jupyter lab notebooks/             # step-by-step analysis, runnable cell by cell
-streamlit run app/streamlit_app.py # demo
-uvicorn hmrec.api:app              # API;  python -m hmrec.loadtest  measures p50/p95/p99
-pytest && ruff check .
+pip install -r requirements.txt
+streamlit run app/streamlit_app.py
 ```
 
-Data: join the competition and accept its rules on Kaggle (required by Kaggle), then either save
-the competition zip in the project folder (only the three CSVs are extracted; the 28 GB of images
-are ignored) or copy `.env.example` to `.env` and add your Kaggle token. `.env`, zips and `data/`
-are git-ignored.
+A browser tab opens at http://localhost:8501. Pick a customer number on the left, move the
+"variety" slider, and read why each product was suggested. Without the real data it starts
+instantly on made-up shoppers (a yellow notice says so). To see the real thing, download the
+H&M competition data from Kaggle, put the competition zip in this folder, run
+`python -m hmrec.data download` once, and start the app again. The first start then takes a few
+minutes while it prepares everything. Product photos are shown when the `images` folder is
+present.
 
-## Method
+## What is in this project
 
-| Piece | What it does |
+| Folder or file | What it is |
 |---|---|
-| Split | last 7 days = test, the 7 days before = ranker labels, older = history. Retrievers/features for a target week only see earlier data; a unit test fails otherwise. |
-| Metric | MAP@12 over the full catalogue (competition definition) for customers who bought in the target week and had prior history; repurchases are **not** masked. 95% bootstrap CIs over customers; paired bootstrap for differences. |
-| Candidates | repurchase (recency-decayed), trending, age-group popularity, co-purchase item-item, ALS, two-tower with FAISS HNSW. Recall@K reported per source and for the union. |
-| Ranker | LightGBM LambdaRank on the validation week; feature groups: source scores, customer, article, customer×article, text-embedding similarity (MiniLM over product name/description). Ablation removes one group at a time. |
-| Diversity | MMR re-ranking over description embeddings; coverage, novelty, Gini, popularity-head share, category diversity. |
-| Explanations | built only from recorded facts (which sources proposed the article, times bought, product-type share); tested against the purchase log. |
+| `hmrec/` | the recommender itself (data loading, scouts, ranking model, scoring, API) |
+| `app/streamlit_app.py` | the interactive demo |
+| `notebooks/` | four step-by-step notebooks with charts: data exploration, simple baselines, the two-step system, and variety versus accuracy |
+| `tests/` | 48 automated checks, including "no peeking at the future" |
+| `Dockerfile`, `.github/workflows/ci.yml` | packaging and automatic checks on every change |
 
-## Results
+Everything below the line is detail for engineers. All numbers are produced by the project's own
+code (`python -m hmrec.run`) and inserted automatically; none is typed by hand.
+
+---
+
+## Things to keep in mind
+
+- Results come from a random 10% of customers (136,228 people), so the whole experiment runs on an ordinary
+  computer in about 25 minutes. They are not comparable with the public Kaggle leaderboard, which uses a
+  different customer set and a hidden test week.
+- The test is a replay of past purchases. It shows how well the system predicts what shoppers
+  bought; it cannot show what they would have bought if shown something else.
+- Shoppers with no earlier purchases are left out of the headline score (they need a different
+  approach, since there is nothing to learn from).
+- Product photos are used for display only; the models use the product names and descriptions.
+- The ranking model was lightly tuned on one validation week and trained with one random seed.
+
+## What the experiments showed
+
+- Suggesting what a shopper bought before is the strongest single rule, far ahead of "most
+  popular right now" or "popular for your age".
+- The two-step system beats that rule, and the gain comes mostly from clues about the product
+  and about the shopper-product pair.
+- Some clue groups did not help measurably on this sample. In particular, adding a text-understanding model
+  that reads product descriptions added nothing detectable.
+- The shortlist only contains a minority of what shoppers buy, so better scouts are the biggest
+  opportunity for improvement.
+- Making the list more varied lowers accuracy gradually; the table below shows how much.
+
+## Technical details
+
+Two-stage retrieval and ranking: six candidate sources (recency-weighted repurchase, trending,
+age-group popularity, item-item co-purchase, implicit ALS, two-tower served through FAISS HNSW)
+feed a LightGBM LambdaRank model trained on the validation week. Split: last 7 days = test, the 7
+days before = ranker labels, older = history. MAP@12 over the full catalogue with 95% bootstrap
+confidence intervals over customers; paired bootstrap for differences.
+
+```bash
+pip install -e ".[all]"            # CPU PyTorch: pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+python -m hmrec.data download      # extracts the 3 CSVs from the competition zip, or uses the Kaggle CLI with .env credentials
+python -m hmrec.run                # all experiments (10% sample, seed 0), regenerates the tables below
+python -m hmrec.ann_eval           # two-tower + FAISS measurements
+python -m hmrec.loadtest           # API latency
+python -m hmrec.report             # rebuilds docs/RESULTS.md and this README's tables
+jupyter lab notebooks/             # notebooks
+uvicorn hmrec.api:app              # API (/recommend, /image/{article_id}, /health)
+pytest && ruff check . && mypy hmrec --ignore-missing-imports
+```
 
 <!-- RESULTS:START -->
 **Data:** 136,228 customers (seeded 10% sample), 105,542 articles, 3,179,841 purchases over 733 days. **Evaluated customers:** 5,726 (test week), 5,976 (validation week). Metric: MAP@12 over the full catalogue, 95% bootstrap CI over customers.
@@ -119,41 +197,6 @@ Full ranker minus best baseline (`repurchase`): +0.0060 [+0.0039, +0.0079] MAP@1
 _Full run took 23 min on CPU; seed 0._
 <!-- RESULTS:END -->
 
-## Reading the results
-
-- **Repurchasing is the strongest single signal.** The best simple baseline is "buy it again", far
-  ahead of global or age-group popularity and of collaborative models trained on their own.
-- **The two-stage ranker beats that baseline**, and the paired interval in the ablation table says
-  by how much. The gain is real but modest: most of it comes from article and customer×article
-  features, not from the learned candidate sources.
-- **Not every feature group earns its place.** In the ablation, groups whose interval spans zero
-  (marked `n.s.`) are not shown to help on this sample. In particular the text-embedding feature
-  adds nothing measurable here.
-- **Candidate recall is the ceiling.** The union of sources proposes only a small share of what was
-  bought, so better candidate generation is the largest remaining lever, more than ranker tuning.
-- **MMR trades accuracy for category variety almost linearly** and barely changes catalogue
-  coverage; popularity concentration stays high because the data itself is concentrated.
-- **ANN:** at ~100k articles an exact search is as fast as HNSW; HNSW is included because it is how
-  this would be served at larger catalogue sizes, and the table shows what its recall costs.
-
-## Limitations (read before quoting any number)
-
-- The LightGBM ranker stopped early at a small number of trees on a one-week validation slice;
-  it is lightly tuned and results are from a single seed.
-- Notebooks use slightly simpler settings than `hmrec.run` (no two-tower source), so their ablation
-  numbers differ from the README table. The README table is the reference.
-
-- Scores come from a seeded **customer subsample** and my own week split; they are **not comparable
-  to the Kaggle leaderboard** (different customer set, no private test week).
-- Customers with no purchase history before the target week are excluded from the headline metric
-  (cold start is treated separately).
-- Evaluation is offline on logged purchases: it cannot measure what customers *would* have bought
-  if shown something else. No A/B test, no counterfactual (IPS) estimate is claimed.
-- Images are not used; article text is H&M's own product name and description.
-- Hyper-parameters are tuned lightly on a single validation week; results are from one seed.
-- Latency numbers are for one machine and the in-process cache; see `results/loadtest.json`.
-
-## Layout
-
-`hmrec/` package · `tests/` · `notebooks/` (built by `notebooks/build_notebooks.py`, committed
-without outputs) · `app/streamlit_app.py` · `Dockerfile` · `.github/workflows/ci.yml`
+Data access: join the competition on Kaggle and accept its rules, then either save the
+competition zip in the project folder (only the three CSVs are read) or copy `.env.example` to
+`.env` and add a Kaggle token. `.env`, zips and `data/` are git-ignored.
