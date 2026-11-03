@@ -1,7 +1,10 @@
-# H&M Fashion Recommender
+# Fashion Recommender System
+
+*A fashion recommender built on H&M purchase data*
 
 A system that suggests which clothes a shopper is likely to buy next, built and tested on real
-H&M purchase records (31.8 million purchases, 105,000 products, 1.37 million customers).
+H&M purchase records (31.8 million purchases, 105,000 products, 1.37 million customers). It is an
+independent portfolio project, not made by or affiliated with H&M.
 
 ## The result in one paragraph
 
@@ -42,14 +45,47 @@ a week. What matters is the comparison with simple alternatives, shown below.
 ## Try it
 
 **Live demo:** see the link in the repository's *About* box. The online demo uses made-up sample
-shoppers, because H&M's real data is not allowed to be shared publicly.
+shoppers, because H&M's real data is not allowed to be shared publicly. Its charts and scores
+come from measurements on the real data.
 
-**Run it on your own computer** (Windows, Mac or Linux, with Python 3.11 or newer):
+**Using the demo (no technical knowledge needed).** The app opens on a **Start here** tab that
+explains everything in plain words. In short:
 
-```bash
+| Tab | What you can do there |
+|---|---|
+| Start here | read what the app is, how to use it and what to try |
+| Recommendations | pick a shopper (left panel) and see the 12 suggestions, each with a reason |
+| Purchase history | see what that shopper bought before, to judge if the suggestions fit |
+| Data analysis | a guided tour of the purchase data in simple charts (busy weeks, how much people buy, favourite products, ages, prices) |
+| How good is it? | the scores against simpler ideas, which clues helped, and the variety trade-off, each chart with a sentence explaining how to read it |
+
+Things to try: press *Pick a random shopper* a few times, and drag the *Variety* slider to the
+left to see the list become less repetitive.
+
+**Run it on your own computer** (Windows, Mac or Linux, with Python 3.11 or newer). Use a
+virtual environment, which keeps this project's libraries separate from your other projects.
+
+Windows (PowerShell):
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 streamlit run app/streamlit_app.py
 ```
+
+Mac or Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+streamlit run app/streamlit_app.py
+```
+
+If PowerShell refuses to run `Activate.ps1`, run `Set-ExecutionPolicy -Scope Process Bypass` once
+in that window and try again. After activation the prompt starts with `(.venv)`; repeat the
+activation step in any new terminal before running the app.
 
 A browser tab opens at http://localhost:8501. Pick a customer number on the left, move the
 "variety" slider, and read why each product was suggested. Without the real data it starts
@@ -64,7 +100,7 @@ present.
 | Folder or file | What it is |
 |---|---|
 | `hmrec/` | the recommender itself (data loading, scouts, ranking model, scoring, API) |
-| `app/streamlit_app.py` | the interactive demo |
+| `app/streamlit_app.py` | the interactive demo (guide, recommendations, history, data analysis, results) |
 | `notebooks/` | four step-by-step notebooks with charts: data exploration, simple baselines, the two-step system, and variety versus accuracy |
 | `tests/` | 48 automated checks, including "no peeking at the future" |
 | `Dockerfile`, `.github/workflows/ci.yml` | packaging and automatic checks on every change |
@@ -110,6 +146,7 @@ confidence intervals over customers; paired bootstrap for differences.
 pip install -e ".[all]"            # CPU PyTorch: pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 python -m hmrec.data download      # extracts the 3 CSVs from the competition zip, or uses the Kaggle CLI with .env credentials
 python -m hmrec.run                # all experiments (10% sample, seed 0), regenerates the tables below
+python -m hmrec.eda                # data-analysis numbers for the app's Data analysis tab (aggregates only)
 python -m hmrec.ann_eval           # two-tower + FAISS measurements
 python -m hmrec.loadtest           # API latency
 python -m hmrec.report             # rebuilds docs/RESULTS.md and this README's tables
