@@ -1,0 +1,719 @@
+{
+  "customers": 136228,
+  "articles_in_catalogue": 105542,
+  "articles_purchased": 85739,
+  "purchases": 3179841,
+  "days": 734,
+  "first_day": "2018-09-20",
+  "weekly_purchases": [
+    {
+      "week_start": "2018-09-20",
+      "purchases": 29751
+    },
+    {
+      "week_start": "2018-09-27",
+      "purchases": 40275
+    },
+    {
+      "week_start": "2018-10-04",
+      "purchases": 27561
+    },
+    {
+      "week_start": "2018-10-11",
+      "purchases": 34525
+    },
+    {
+      "week_start": "2018-10-18",
+      "purchases": 32965
+    },
+    {
+      "week_start": "2018-10-25",
+      "purchases": 34410
+    },
+    {
+      "week_start": "2018-11-01",
+      "purchases": 24321
+    },
+    {
+      "week_start": "2018-11-08",
+      "purchases": 24376
+    },
+    {
+      "week_start": "2018-11-15",
+      "purchases": 26980
+    },
+    {
+      "week_start": "2018-11-22",
+      "purchases": 45597
+    },
+    {
+      "week_start": "2018-11-29",
+      "purchases": 21981
+    },
+    {
+      "week_start": "2018-12-06",
+      "purchases": 24830
+    },
+    {
+      "week_start": "2018-12-13",
+      "purchases": 25980
+    },
+    {
+      "week_start": "2018-12-20",
+      "purchases": 29826
+    },
+    {
+      "week_start": "2018-12-27",
+      "purchases": 26908
+    },
+    {
+      "week_start": "2019-01-03",
+      "purchases": 31441
+    },
+    {
+      "week_start": "2019-01-10",
+      "purchases": 29848
+    },
+    {
+      "week_start": "2019-01-17",
+      "purchases": 25521
+    },
+    {
+      "week_start": "2019-01-24",
+      "purchases": 29703
+    },
+    {
+      "week_start": "2019-01-31",
+      "purchases": 27915
+    },
+    {
+      "week_start": "2019-02-07",
+      "purchases": 25171
+    },
+    {
+      "week_start": "2019-02-14",
+      "purchases": 25952
+    },
+    {
+      "week_start": "2019-02-21",
+      "purchases": 36152
+    },
+    {
+      "week_start": "2019-02-28",
+      "purchases": 27613
+    },
+    {
+      "week_start": "2019-03-07",
+      "purchases": 28129
+    },
+    {
+      "week_start": "2019-03-14",
+      "purchases": 27720
+    },
+    {
+      "week_start": "2019-03-21",
+      "purchases": 30456
+    },
+    {
+      "week_start": "2019-03-28",
+      "purchases": 31974
+    },
+    {
+      "week_start": "2019-04-04",
+      "purchases": 36092
+    },
+    {
+      "week_start": "2019-04-11",
+      "purchases": 31130
+    },
+    {
+      "week_start": "2019-04-18",
+      "purchases": 37719
+    },
+    {
+      "week_start": "2019-04-25",
+      "purchases": 37941
+    },
+    {
+      "week_start": "2019-05-02",
+      "purchases": 34951
+    },
+    {
+      "week_start": "2019-05-09",
+      "purchases": 27219
+    },
+    {
+      "week_start": "2019-05-16",
+      "purchases": 36428
+    },
+    {
+      "week_start": "2019-05-23",
+      "purchases": 38695
+    },
+    {
+      "week_start": "2019-05-30",
+      "purchases": 40314
+    },
+    {
+      "week_start": "2019-06-06",
+      "purchases": 30243
+    },
+    {
+      "week_start": "2019-06-13",
+      "purchases": 42902
+    },
+    {
+      "week_start": "2019-06-20",
+      "purchases": 63517
+    },
+    {
+      "week_start": "2019-06-27",
+      "purchases": 49165
+    },
+    {
+      "week_start": "2019-07-04",
+      "purchases": 39119
+    },
+    {
+      "week_start": "2019-07-11",
+      "purchases": 36474
+    },
+    {
+      "week_start": "2019-07-18",
+      "purchases": 44043
+    },
+    {
+      "week_start": "2019-07-25",
+      "purchases": 37296
+    },
+    {
+      "week_start": "2019-08-01",
+      "purchases": 30729
+    },
+    {
+      "week_start": "2019-08-08",
+      "purchases": 29766
+    },
+    {
+      "week_start": "2019-08-15",
+      "purchases": 31197
+    },
+    {
+      "week_start": "2019-08-22",
+      "purchases": 23987
+    },
+    {
+      "week_start": "2019-08-29",
+      "purchases": 23519
+    },
+    {
+      "week_start": "2019-09-05",
+      "purchases": 26839
+    },
+    {
+      "week_start": "2019-09-12",
+      "purchases": 25034
+    },
+    {
+      "week_start": "2019-09-19",
+      "purchases": 23037
+    },
+    {
+      "week_start": "2019-09-26",
+      "purchases": 44274
+    },
+    {
+      "week_start": "2019-10-03",
+      "purchases": 29868
+    },
+    {
+      "week_start": "2019-10-10",
+      "purchases": 25117
+    },
+    {
+      "week_start": "2019-10-17",
+      "purchases": 22288
+    },
+    {
+      "week_start": "2019-10-24",
+      "purchases": 23992
+    },
+    {
+      "week_start": "2019-10-31",
+      "purchases": 27212
+    },
+    {
+      "week_start": "2019-11-07",
+      "purchases": 20570
+    },
+    {
+      "week_start": "2019-11-14",
+      "purchases": 19166
+    },
+    {
+      "week_start": "2019-11-21",
+      "purchases": 22595
+    },
+    {
+      "week_start": "2019-11-28",
+      "purchases": 50622
+    },
+    {
+      "week_start": "2019-12-05",
+      "purchases": 18346
+    },
+    {
+      "week_start": "2019-12-12",
+      "purchases": 25687
+    },
+    {
+      "week_start": "2019-12-19",
+      "purchases": 31657
+    },
+    {
+      "week_start": "2019-12-26",
+      "purchases": 20704
+    },
+    {
+      "week_start": "2020-01-02",
+      "purchases": 26492
+    },
+    {
+      "week_start": "2020-01-09",
+      "purchases": 23739
+    },
+    {
+      "week_start": "2020-01-16",
+      "purchases": 20999
+    },
+    {
+      "week_start": "2020-01-23",
+      "purchases": 26649
+    },
+    {
+      "week_start": "2020-01-30",
+      "purchases": 23224
+    },
+    {
+      "week_start": "2020-02-06",
+      "purchases": 24462
+    },
+    {
+      "week_start": "2020-02-13",
+      "purchases": 23197
+    },
+    {
+      "week_start": "2020-02-20",
+      "purchases": 24251
+    },
+    {
+      "week_start": "2020-02-27",
+      "purchases": 28516
+    },
+    {
+      "week_start": "2020-03-05",
+      "purchases": 28401
+    },
+    {
+      "week_start": "2020-03-12",
+      "purchases": 19669
+    },
+    {
+      "week_start": "2020-03-19",
+      "purchases": 20238
+    },
+    {
+      "week_start": "2020-03-26",
+      "purchases": 23362
+    },
+    {
+      "week_start": "2020-04-02",
+      "purchases": 35237
+    },
+    {
+      "week_start": "2020-04-09",
+      "purchases": 37992
+    },
+    {
+      "week_start": "2020-04-16",
+      "purchases": 23216
+    },
+    {
+      "week_start": "2020-04-23",
+      "purchases": 30852
+    },
+    {
+      "week_start": "2020-04-30",
+      "purchases": 20666
+    },
+    {
+      "week_start": "2020-05-07",
+      "purchases": 26485
+    },
+    {
+      "week_start": "2020-05-14",
+      "purchases": 31813
+    },
+    {
+      "week_start": "2020-05-21",
+      "purchases": 39971
+    },
+    {
+      "week_start": "2020-05-28",
+      "purchases": 35208
+    },
+    {
+      "week_start": "2020-06-04",
+      "purchases": 30352
+    },
+    {
+      "week_start": "2020-06-11",
+      "purchases": 35983
+    },
+    {
+      "week_start": "2020-06-18",
+      "purchases": 53442
+    },
+    {
+      "week_start": "2020-06-25",
+      "purchases": 47748
+    },
+    {
+      "week_start": "2020-07-02",
+      "purchases": 32892
+    },
+    {
+      "week_start": "2020-07-09",
+      "purchases": 28817
+    },
+    {
+      "week_start": "2020-07-16",
+      "purchases": 28566
+    },
+    {
+      "week_start": "2020-07-23",
+      "purchases": 29499
+    },
+    {
+      "week_start": "2020-07-30",
+      "purchases": 32117
+    },
+    {
+      "week_start": "2020-08-06",
+      "purchases": 29849
+    },
+    {
+      "week_start": "2020-08-13",
+      "purchases": 22822
+    },
+    {
+      "week_start": "2020-08-20",
+      "purchases": 26659
+    },
+    {
+      "week_start": "2020-08-27",
+      "purchases": 27044
+    },
+    {
+      "week_start": "2020-09-03",
+      "purchases": 27087
+    },
+    {
+      "week_start": "2020-09-10",
+      "purchases": 23929
+    },
+    {
+      "week_start": "2020-09-17",
+      "purchases": 21061
+    }
+  ],
+  "purchases_per_customer": [
+    {
+      "band": "1",
+      "count": 13280
+    },
+    {
+      "band": "2-4",
+      "count": 30478
+    },
+    {
+      "band": "5-9",
+      "count": 24973
+    },
+    {
+      "band": "10-24",
+      "count": 30828
+    },
+    {
+      "band": "25-49",
+      "count": 19153
+    },
+    {
+      "band": "50-99",
+      "count": 11763
+    },
+    {
+      "band": "100+",
+      "count": 5753
+    }
+  ],
+  "median_purchases_per_customer": 9.0,
+  "mean_purchases_per_customer": 23.342051560618962,
+  "repeat_purchase_share": 0.14077118950287137,
+  "test_week_repeat_share": 0.03160292303312138,
+  "product_groups": [
+    {
+      "name": "Garment Upper body",
+      "purchases": 1261308,
+      "share": 0.39665756872749297
+    },
+    {
+      "name": "Garment Lower body",
+      "purchases": 704701,
+      "share": 0.2216151688087549
+    },
+    {
+      "name": "Garment Full body",
+      "purchases": 353362,
+      "share": 0.11112568207026703
+    },
+    {
+      "name": "Swimwear",
+      "purchases": 257064,
+      "share": 0.0808417779379535
+    },
+    {
+      "name": "Underwear",
+      "purchases": 254675,
+      "share": 0.08009048251154696
+    },
+    {
+      "name": "Accessories",
+      "purchases": 159196,
+      "share": 0.05006413842704714
+    },
+    {
+      "name": "Shoes",
+      "purchases": 74178,
+      "share": 0.023327581473413295
+    },
+    {
+      "name": "Socks & Tights",
+      "purchases": 69463,
+      "share": 0.021844802931970497
+    },
+    {
+      "name": "Nightwear",
+      "purchases": 34552,
+      "share": 0.010865952102636578
+    },
+    {
+      "name": "Unknown",
+      "purchases": 9738,
+      "share": 0.0030624172718069866
+    },
+    {
+      "name": "Bags",
+      "purchases": 775,
+      "share": 0.00024372287796779776
+    },
+    {
+      "name": "Items",
+      "purchases": 559,
+      "share": 0.00017579495326967606
+    }
+  ],
+  "product_types": [
+    {
+      "name": "Trousers",
+      "purchases": 421996,
+      "share": 0.1327097801430952
+    },
+    {
+      "name": "Dress",
+      "purchases": 322051,
+      "share": 0.10127896331923514
+    },
+    {
+      "name": "Sweater",
+      "purchases": 279980,
+      "share": 0.08804842757861163
+    },
+    {
+      "name": "T-shirt",
+      "purchases": 223314,
+      "share": 0.07022803970387198
+    },
+    {
+      "name": "Top",
+      "purchases": 159344,
+      "share": 0.05011068163471066
+    },
+    {
+      "name": "Blouse",
+      "purchases": 150829,
+      "share": 0.04743287478839351
+    },
+    {
+      "name": "Vest top",
+      "purchases": 141387,
+      "share": 0.044463543931913575
+    },
+    {
+      "name": "Bra",
+      "purchases": 132750,
+      "share": 0.041747370387387295
+    },
+    {
+      "name": "Shorts",
+      "purchases": 114701,
+      "share": 0.03607130042036693
+    },
+    {
+      "name": "Bikini top",
+      "purchases": 112436,
+      "share": 0.03535900065443524
+    },
+    {
+      "name": "Swimwear bottom",
+      "purchases": 109685,
+      "share": 0.03449386305793277
+    },
+    {
+      "name": "Underwear bottom",
+      "purchases": 105964,
+      "share": 0.03332367876255448
+    }
+  ],
+  "colours": [
+    {
+      "name": "Black",
+      "purchases": 1102030,
+      "share": 0.3465676428475512
+    },
+    {
+      "name": "White",
+      "purchases": 338095,
+      "share": 0.10632449861486785
+    },
+    {
+      "name": "Dark Blue",
+      "purchases": 218189,
+      "share": 0.06861632389795591
+    },
+    {
+      "name": "Light Beige",
+      "purchases": 126735,
+      "share": 0.03985576637322432
+    },
+    {
+      "name": "Blue",
+      "purchases": 108682,
+      "share": 0.03417843848167251
+    },
+    {
+      "name": "Beige",
+      "purchases": 92711,
+      "share": 0.029155860308738707
+    },
+    {
+      "name": "Light Blue",
+      "purchases": 90958,
+      "share": 0.028604574882832193
+    },
+    {
+      "name": "Light Pink",
+      "purchases": 85612,
+      "share": 0.02692335874655368
+    },
+    {
+      "name": "Grey",
+      "purchases": 84470,
+      "share": 0.026564221292825648
+    },
+    {
+      "name": "Off White",
+      "purchases": 83933,
+      "share": 0.02639534492447893
+    }
+  ],
+  "age_customers": [
+    {
+      "band": "under 20",
+      "count": 7070
+    },
+    {
+      "band": "20s",
+      "count": 52194
+    },
+    {
+      "band": "30s",
+      "count": 23311
+    },
+    {
+      "band": "40s",
+      "count": 20369
+    },
+    {
+      "band": "50s",
+      "count": 22597
+    },
+    {
+      "band": "60+",
+      "count": 9095
+    }
+  ],
+  "top1pct_articles_share_of_purchases": 0.1671042671630437,
+  "top1pct_articles_count": 857,
+  "median_purchases_per_sold_article": 11.0,
+  "price_histogram": {
+    "edges": [
+      0.0,
+      0.005038983188569546,
+      0.010077966377139091,
+      0.015116948634386063,
+      0.020155932754278183,
+      0.025194915011525154,
+      0.030233897268772125,
+      0.035272881388664246,
+      0.040311865508556366,
+      0.04535084590315819,
+      0.05038983002305031,
+      0.05542881414294243,
+      0.06046779453754425,
+      0.06550677865743637,
+      0.07054576277732849,
+      0.07558474689722061,
+      0.08062373101711273,
+      0.08566270768642426,
+      0.09070169180631638,
+      0.0957406759262085,
+      0.10077966004610062
+    ],
+    "counts": [
+      48300,
+      272885,
+      392027,
+      529220,
+      313426,
+      440787,
+      520448,
+      50241,
+      197304,
+      45306,
+      165362,
+      46490,
+      14518,
+      67002,
+      2841,
+      7395,
+      29069,
+      1034,
+      2590,
+      33596
+    ]
+  },
+  "median_price": 0.02540677972137928,
+  "sample_frac": 0.1,
+  "seed": 0
+}

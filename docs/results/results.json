@@ -1,0 +1,393 @@
+{
+  "config": {
+    "sample_frac": 0.1,
+    "seed": 0,
+    "history_weeks": 26,
+    "encoder": "minilm",
+    "n_repurchase": 40,
+    "n_popular": 30,
+    "n_neighbors": 50,
+    "tt_epochs": 6,
+    "threads": 12,
+    "fixture": false,
+    "python": "3.13.5"
+  },
+  "data": {
+    "customers": 136228,
+    "articles_in_catalogue": 105542,
+    "articles_purchased": 85739,
+    "purchases": 3179841,
+    "span_days": 733.0,
+    "purchases_per_customer": 23.34
+  },
+  "split": {
+    "train": 797809,
+    "val": 25369,
+    "test": 23650
+  },
+  "eval_customers": {
+    "val": 5976,
+    "test": 5726
+  },
+  "baseline_tuning_val_map12": {
+    "popularity": {
+      "popularity-7d": 0.00636,
+      "popularity-14d": 0.00572,
+      "popularity-28d": 0.00531
+    },
+    "repurchase": {
+      "repurchase-hl7d": 0.02717,
+      "repurchase-hl14d": 0.02701,
+      "repurchase-hl28d": 0.02604,
+      "repurchase-hl56d": 0.02451
+    },
+    "age-popularity": {
+      "age-popularity-7d": 0.00676,
+      "age-popularity-14d": 0.00656
+    },
+    "co-purchase": {
+      "co-purchase-28d": 0.00805,
+      "co-purchase-56d": 0.00753
+    },
+    "als": {
+      "als-32f": 0.00687,
+      "als-64f": 0.00842
+    }
+  },
+  "baselines_test": {
+    "popularity": {
+      "map@12": 0.00814,
+      "recall@12": 0.02389,
+      "ndcg@12": 0.01483,
+      "recall@100": 0.11078,
+      "coverage": 0.00011,
+      "novelty": 9.30732,
+      "gini": 0.99989,
+      "head_share": 0.33333,
+      "tag_ild": 0.70719,
+      "arp": 181.08333,
+      "ci_map@12": [
+        0.00673,
+        0.00981
+      ]
+    },
+    "repurchase": {
+      "map@12": 0.02729,
+      "recall@12": 0.04637,
+      "ndcg@12": 0.03627,
+      "recall@100": 0.05024,
+      "coverage": 0.14294,
+      "novelty": 10.47491,
+      "gini": 0.92795,
+      "head_share": 0.27005,
+      "tag_ild": 0.71147,
+      "arp": 100.34222,
+      "ci_map@12": [
+        0.02387,
+        0.03068
+      ]
+    },
+    "age-popularity": {
+      "map@12": 0.00816,
+      "recall@12": 0.02642,
+      "ndcg@12": 0.01538,
+      "recall@100": 0.10916,
+      "coverage": 0.00064,
+      "novelty": 9.51433,
+      "gini": 0.99975,
+      "head_share": 0.34094,
+      "tag_ild": 0.70774,
+      "arp": 157.86676,
+      "ci_map@12": [
+        0.00679,
+        0.00975
+      ]
+    },
+    "co-purchase": {
+      "map@12": 0.00694,
+      "recall@12": 0.01747,
+      "ndcg@12": 0.01147,
+      "recall@100": 0.03849,
+      "coverage": 0.0802,
+      "novelty": 12.01223,
+      "gini": 0.95292,
+      "head_share": 0.08132,
+      "tag_ild": 0.41828,
+      "arp": 42.32409,
+      "ci_map@12": [
+        0.00558,
+        0.00845
+      ]
+    },
+    "als": {
+      "map@12": 0.00924,
+      "recall@12": 0.02103,
+      "ndcg@12": 0.015,
+      "recall@100": 0.06638,
+      "coverage": 0.02136,
+      "novelty": 8.30775,
+      "gini": 0.99338,
+      "head_share": 0.89195,
+      "tag_ild": 0.60641,
+      "arp": 279.26669,
+      "ci_map@12": [
+        0.00764,
+        0.01083
+      ]
+    }
+  },
+  "candidates": {
+    "val_recall": {
+      "union": 0.1505,
+      "repurchase": 0.0486,
+      "popularity": 0.046,
+      "age_pop": 0.04,
+      "co_purchase": 0.0332,
+      "als": 0.0455,
+      "two_tower": 0.0563
+    },
+    "test_recall": {
+      "union": 0.1647,
+      "repurchase": 0.0499,
+      "popularity": 0.05,
+      "age_pop": 0.0498,
+      "co_purchase": 0.0313,
+      "als": 0.0474,
+      "two_tower": 0.0639
+    },
+    "avg_candidates_per_customer": 163.3
+  },
+  "ranker": {
+    "ablation": {
+      "full": {
+        "map@12": 0.03326,
+        "recall@12": 0.06873,
+        "ndcg@12": 0.04871,
+        "recall@100": 0.15585,
+        "coverage": 0.04637,
+        "novelty": 9.42213,
+        "gini": 0.99413,
+        "head_share": 0.49201,
+        "tag_ild": 0.63382,
+        "arp": 174.49112,
+        "n_features": 44,
+        "ci_map@12": [
+          0.02975,
+          0.037
+        ],
+        "trees": 25
+      },
+      "without source": {
+        "map@12": 0.03184,
+        "recall@12": 0.06371,
+        "ndcg@12": 0.04575,
+        "recall@100": 0.15469,
+        "coverage": 0.04159,
+        "novelty": 9.61023,
+        "gini": 0.99526,
+        "head_share": 0.41763,
+        "tag_ild": 0.62261,
+        "arp": 147.12547,
+        "n_features": 32,
+        "ci_map@12": [
+          0.02848,
+          0.03553
+        ],
+        "trees": 67
+      },
+      "without customer": {
+        "map@12": 0.0315,
+        "recall@12": 0.06771,
+        "ndcg@12": 0.04682,
+        "recall@100": 0.15505,
+        "coverage": 0.04222,
+        "novelty": 9.38101,
+        "gini": 0.99527,
+        "head_share": 0.50525,
+        "tag_ild": 0.63993,
+        "arp": 178.27969,
+        "n_features": 30,
+        "ci_map@12": [
+          0.02828,
+          0.03519
+        ],
+        "trees": 17
+      },
+      "without item": {
+        "map@12": 0.03031,
+        "recall@12": 0.06455,
+        "ndcg@12": 0.045,
+        "recall@100": 0.15225,
+        "coverage": 0.05402,
+        "novelty": 9.38403,
+        "gini": 0.9924,
+        "head_share": 0.50506,
+        "tag_ild": 0.67163,
+        "arp": 186.85312,
+        "n_features": 34,
+        "ci_map@12": [
+          0.0271,
+          0.03385
+        ],
+        "trees": 7
+      },
+      "without pair": {
+        "map@12": 0.03113,
+        "recall@12": 0.06832,
+        "ndcg@12": 0.04634,
+        "recall@100": 0.15463,
+        "coverage": 0.04561,
+        "novelty": 9.45639,
+        "gini": 0.9944,
+        "head_share": 0.4643,
+        "tag_ild": 0.63386,
+        "arp": 176.94763,
+        "n_features": 37,
+        "ci_map@12": [
+          0.02784,
+          0.03483
+        ],
+        "trees": 17
+      },
+      "without text": {
+        "map@12": 0.033,
+        "recall@12": 0.06807,
+        "ndcg@12": 0.04823,
+        "recall@100": 0.15565,
+        "coverage": 0.0444,
+        "novelty": 9.41174,
+        "gini": 0.99462,
+        "head_share": 0.48874,
+        "tag_ild": 0.62286,
+        "arp": 173.34364,
+        "n_features": 43,
+        "ci_map@12": [
+          0.02929,
+          0.0368
+        ],
+        "trees": 25
+      },
+      "source scores only": {
+        "map@12": 0.03118,
+        "recall@12": 0.06312,
+        "ndcg@12": 0.04527,
+        "recall@100": 0.15403,
+        "coverage": 0.04996,
+        "novelty": 9.26473,
+        "gini": 0.99346,
+        "head_share": 0.52557,
+        "tag_ild": 0.68294,
+        "arp": 208.0473,
+        "n_features": 12,
+        "ci_map@12": [
+          0.02776,
+          0.03474
+        ],
+        "trees": 22
+      }
+    },
+    "full_vs_best_baseline": {
+      "baseline": "repurchase",
+      "diff": 0.005967200080143546,
+      "lo": 0.003934683476057123,
+      "hi": 0.007892603759112703,
+      "significant": true
+    },
+    "full_vs_ablated": {
+      "without source": {
+        "diff": 0.0014161392575955218,
+        "lo": -0.0007379165732234651,
+        "hi": 0.00321629319288246,
+        "significant": false
+      },
+      "without customer": {
+        "diff": 0.0017555090600806162,
+        "lo": -0.00016905720397376428,
+        "hi": 0.003632372716811951,
+        "significant": false
+      },
+      "without item": {
+        "diff": 0.002948137359978502,
+        "lo": 0.000833875010330854,
+        "hi": 0.00506052303382373,
+        "significant": true
+      },
+      "without pair": {
+        "diff": 0.002122031141547761,
+        "lo": 0.0001695396499758848,
+        "hi": 0.003944172675126858,
+        "significant": true
+      },
+      "without text": {
+        "diff": 0.00025360137371565076,
+        "lo": -0.0015496667820496654,
+        "hi": 0.00201360299259862,
+        "significant": false
+      },
+      "source scores only": {
+        "diff": 0.002072036153746772,
+        "lo": -7.084518831453247e-05,
+        "hi": 0.003957383522476515,
+        "significant": false
+      }
+    }
+  },
+  "mmr_tradeoff": {
+    "1.0": {
+      "map@12": 0.03326,
+      "recall@12": 0.06873,
+      "ndcg@12": 0.04871,
+      "coverage": 0.04637,
+      "novelty": 9.42213,
+      "gini": 0.99413,
+      "head_share": 0.49201,
+      "tag_ild": 0.63382,
+      "arp": 174.49112
+    },
+    "0.9": {
+      "map@12": 0.03299,
+      "recall@12": 0.06847,
+      "ndcg@12": 0.0484,
+      "coverage": 0.04646,
+      "novelty": 9.4228,
+      "gini": 0.99416,
+      "head_share": 0.49039,
+      "tag_ild": 0.64138,
+      "arp": 174.9259
+    },
+    "0.8": {
+      "map@12": 0.03273,
+      "recall@12": 0.06707,
+      "ndcg@12": 0.04782,
+      "coverage": 0.04661,
+      "novelty": 9.42122,
+      "gini": 0.99418,
+      "head_share": 0.48977,
+      "tag_ild": 0.65013,
+      "arp": 175.62497
+    },
+    "0.7": {
+      "map@12": 0.03229,
+      "recall@12": 0.06579,
+      "ndcg@12": 0.04707,
+      "coverage": 0.04678,
+      "novelty": 9.41999,
+      "gini": 0.99422,
+      "head_share": 0.48804,
+      "tag_ild": 0.66039,
+      "arp": 176.4429
+    },
+    "0.5": {
+      "map@12": 0.03075,
+      "recall@12": 0.06132,
+      "ndcg@12": 0.04461,
+      "coverage": 0.04691,
+      "novelty": 9.40814,
+      "gini": 0.99436,
+      "head_share": 0.4897,
+      "tag_ild": 0.68489,
+      "arp": 179.56148
+    }
+  },
+  "runtime_sec": 1375
+}

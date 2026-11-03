@@ -1,0 +1,58 @@
+{
+  "health": {
+    "status": "ok",
+    "synthetic_data": false,
+    "customers": 136228,
+    "articles": 105542,
+    "ranker_trees": 19,
+    "cache": {
+      "hits": 0,
+      "misses": 0
+    }
+  },
+  "concurrency": 8,
+  "single_request_cold": {
+    "n": 30,
+    "p50_ms": 21.7,
+    "p95_ms": 32.9,
+    "p99_ms": 2369.1,
+    "mean_ms": 132.4,
+    "server_p50_ms": 19.8,
+    "server_p95_ms": 20.4,
+    "throughput_rps": 7.5,
+    "cache_hit_share": 0.0
+  },
+  "cold_cache_under_load": {
+    "n": 70,
+    "p50_ms": 117.6,
+    "p95_ms": 554.4,
+    "p99_ms": 569.0,
+    "mean_ms": 163.3,
+    "server_p50_ms": 100.5,
+    "server_p95_ms": 117.9,
+    "throughput_rps": 47.8,
+    "cache_hit_share": 0.0
+  },
+  "mixed_cache_under_load": {
+    "n": 300,
+    "p50_ms": 5.9,
+    "p95_ms": 122.5,
+    "p99_ms": 518.3,
+    "mean_ms": 28.1,
+    "server_p50_ms": 0.0,
+    "server_p95_ms": 103.2,
+    "throughput_rps": 283.5,
+    "cache_hit_share": 0.9
+  },
+  "all_cached_under_load": {
+    "n": 70,
+    "p50_ms": 4.2,
+    "p95_ms": 373.9,
+    "p99_ms": 384.1,
+    "mean_ms": 46.3,
+    "server_p50_ms": 0.0,
+    "server_p95_ms": 0.0,
+    "throughput_rps": 171.3,
+    "cache_hit_share": 1.0
+  }
+}

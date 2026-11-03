@@ -1,0 +1,11 @@
+{
+  "catalogue_articles": 105542,
+  "dim": 64,
+  "train_seconds": 221.1,
+  "final_train_loss": 5.7206,
+  "hnsw_build_seconds": 3.55,
+  "exact_candidate_recall@100": 0.0895,
+  "exact_ms_per_query": 0.07,
+  "hnsw_by_efSearch": "{\"16\": {\"overlap_with_exact_top100\": 0.6219, \"candidate_recall@100\": 0.0858, \"ms_per_query\": 0.007}, \"64\": {\"overlap_with_exact_top100\": 0.8981, \"candidate_recall@100\": 0.0908, \"ms_per_query\": 0.011}, \"128\": {\"overlap_with_exact_top100\": 0.9645, \"candidate_recall@100\": 0.0898, \"ms_per_query\": 0.015}, \"256\": {\"overlap_with_exact_top100\": 0.9906, \"candidate_recall@100\": 0.0893, \"ms_per_query\": 0.034}}",
+  "eval_customers": 5726
+}

@@ -9,6 +9,7 @@ access_token
 # data, caches and outputs are rebuilt by the pipeline
 data/
 results/
+!docs/results/
 mlruns/
 artifacts/
 
