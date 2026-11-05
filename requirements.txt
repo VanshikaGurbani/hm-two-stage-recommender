@@ -9,5 +9,6 @@ lightgbm==4.7.0
 implicit==0.7.3
 faiss-cpu==1.15.1
 matplotlib==3.10.5
-streamlit==1.48.1
+streamlit==1.59.2
+altair==6.3.0
 -e .
