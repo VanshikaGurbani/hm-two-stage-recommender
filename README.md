@@ -1,10 +1,28 @@
-# Fashion Recommender System
+# Fashion Recommendation System
 
 *A fashion recommender built on H&M purchase data*
 
-A system that suggests which clothes a shopper is likely to buy next, built and tested on real
-H&M purchase records (31.8 million purchases, 105,000 products, 1.37 million customers). It is an
-independent portfolio project, not made by or affiliated with H&M.
+### 👉 [Try the live app: fashion-recommendersystem.streamlit.app](https://fashion-recommendersystem.streamlit.app/)
+
+## What is this?
+
+You know the "You might also like..." row on every online clothing shop? Someone (or rather
+something) has to decide which handful of items, out of more than 100,000, show up in that row for
+*you*. This project builds that something from scratch, and then checks honestly whether it works.
+
+It learns from **31.8 million real H&M purchases** (105,000 products, 1.37 million customers) and
+tries to guess the **12 items each shopper will buy in the coming week**. Think of a shop assistant
+who has quietly watched a million shoppers and can say, "this person will probably want another
+pair of those black trousers, and maybe that jacket everyone is buying this week."
+
+The fun part is the test. We hide the most recent week, ask the system for its guesses, then
+reveal what people really bought and see how many guesses were right.
+
+**Did it work?** Yes, modestly but measurably. The hardest rival is a very simple rule: "show
+people what they already bought," because shoppers re-buy a lot. The system beats that rule, and
+the gap is large enough that it is very unlikely to be luck. The exact numbers are just below.
+
+It is an independent portfolio project, not made by or affiliated with H&M.
 
 ## The result in one paragraph
 
@@ -12,11 +30,10 @@ independent portfolio project, not made by or affiliated with H&M.
 On 5,726 real shoppers, the system scored **0.033** (higher is better) against **0.027** for the best simple rule, 'suggest what they bought before'. The improvement is statistically reliable: with 95% confidence it lies between +0.004 and +0.008. The shortlist step finds about 16% of what shoppers go on to buy. A single recommendation takes about 22 milliseconds.
 <!-- HEADLINE:END -->
 
-## What it does, in plain words
+## How it thinks
 
-Picture an online shop with over 100,000 products. For each shopper the system picks the 12
-products they are most likely to buy in the coming week. It works in two steps, like a shop
-assistant would:
+Picture an online shop with over 100,000 products. Checking every product for every shopper would
+be slow, so the system works in two steps, like a clever shop assistant would:
 
 1. **Make a shortlist.** Several quick "scouts" each suggest items: things the shopper bought
    before, what is trending this week, what people of the same age buy, items often bought
@@ -44,9 +61,9 @@ a week. What matters is the comparison with simple alternatives, shown below.
 
 ## Try it
 
-**Live demo:** see the link in the repository's *About* box. The online demo uses made-up sample
-shoppers, because H&M's real data is not allowed to be shared publicly. Its charts and scores
-come from measurements on the real data.
+**Live demo:** [fashion-recommendersystem.streamlit.app](https://fashion-recommendersystem.streamlit.app/).
+The online demo uses made-up sample shoppers, because H&M's real data is not allowed to be shared
+publicly. Its charts and scores come from measurements on the real data.
 
 **Using the demo (no technical knowledge needed).** The app opens on a **Start here** tab that
 explains everything in plain words. In short:

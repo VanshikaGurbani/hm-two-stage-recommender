@@ -13,7 +13,7 @@ def test_streamlit_app_renders_on_synthetic_data():
     assert any("made-up" in w.value for w in at.warning)
     labels = [t.label for t in at.tabs]
     assert labels[0] == "Start here" and "Data analysis" in labels and "How good is it?" in labels
-    assert at.title[0].value == "Fashion Recommender System"
+    assert at.title[0].value == "Fashion Recommendation System"
     # change the MMR slider and the customer; the app must still render
     at.sidebar.slider[1].set_value(0.5).run()
     at.sidebar.number_input[0].set_value(2).run()

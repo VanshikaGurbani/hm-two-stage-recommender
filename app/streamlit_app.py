@@ -19,7 +19,7 @@ from hmrec import eda, report, workspace
 from hmrec.images import ImageStore
 from hmrec.pipeline import System
 
-TITLE = "Fashion Recommender System"
+TITLE = "Fashion Recommendation System"
 SUBTITLE = "A fashion recommender built on H&M purchase data"
 
 st.set_page_config(page_title=TITLE, layout="wide")
